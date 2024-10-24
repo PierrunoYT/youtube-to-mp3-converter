@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const convertBtn = document.getElementById('convert-btn');
     const statusMessage = document.getElementById('status-message');
     const progressBar = document.getElementById('progress');
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
 
     function validateYoutubeUrl(url) {
         const regex = /(https?:\/\/)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^&=%\?]{11})/;
@@ -61,7 +62,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 200);
     }
 
+    function toggleDarkMode() {
+        const currentTheme = document.body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
+
+    function applySavedTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+    }
+
     convertBtn.addEventListener('click', simulateConversion);
+    darkModeToggle.addEventListener('click', toggleDarkMode);
 
     youtubeUrlInput.addEventListener('input', () => {
         if (youtubeUrlInput.value.trim() === '') {
@@ -72,4 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update output directory placeholder to show default
     outputDirInput.placeholder = "Leave empty to use downloads folder";
+
+    // Apply saved theme on page load
+    applySavedTheme();
 });
